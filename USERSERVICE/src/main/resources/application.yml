@@ -1,0 +1,39 @@
+server:
+  port: 8081
+  
+spring:
+  application:
+    name: user-service
+  security:
+    user:
+      name: admin
+      password: admin
+    
+  datasource:
+    url: jdbc:mysql://localhost:3306/userservice
+    username: root
+    password: ccs@0909
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  
+eureka:
+  instance:
+    prefer-ip-address: true
+    
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+      
+logging:
+  level:
+    com.netflix.discovery: DEBUG
+    org.springframework.cloud.netflix.eureka: DEBUG
