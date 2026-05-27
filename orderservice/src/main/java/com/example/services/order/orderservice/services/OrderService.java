@@ -51,7 +51,7 @@ public class OrderService {
         if (order.isPresent()) {
             long userIdFromOrder = order.get().getOrderUserId();
             ResponseEntity<UserEntity> response = restTemplate.exchange(
-                    "http://localhost:8081/userController/" + userIdFromOrder,
+                    "http://USER-SERVICE/userController/" + userIdFromOrder,
                     org.springframework.http.HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<UserEntity>() {

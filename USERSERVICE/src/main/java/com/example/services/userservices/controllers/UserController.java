@@ -40,6 +40,7 @@ public class UserController {
 
     @GetMapping
     public List<UserEntity> geAllUser() {
+        System.out.println("getAllUser::::::::::::::::::::::::");
         return UserService.getAllUserList();
     }
 

@@ -41,6 +41,7 @@ public class UserService {
         List<UserEntity> allUser = UserRepository.findAll();
         try {
             if (!allUser.isEmpty()) {
+                System.out.println("inside::::::::2222 " + allUser.size());
                 for (int i = 0; i < allUser.size(); i++) {
                     List<OrderEntity> OrderEntity = getAllOrderByUserId(allUser.get(i).getUserId());
                     allUser.get(i).setOrderEntity(OrderEntity);
@@ -70,9 +71,10 @@ public class UserService {
     }
 
     public List<OrderEntity> getAllOrderByUserId(long userId) {
+        System.out.println("calling API second:::::::::::::");
         ResponseEntity<List<OrderEntity>> response
                 = restTemplate.exchange(
-                        "http://localhost:8082/orderController/userId/" + userId,
+                        "http://ORDER-SERVICE/orderController/userId/" + userId,
                         HttpMethod.GET,
                         null,
                         new ParameterizedTypeReference<List<OrderEntity>>() {
@@ -83,7 +85,7 @@ public class UserService {
 
     public OrderEntity getOrderById(long orderId) {
         System.out.println("inside:::::::getOrderById");
-        OrderEntity orderByID = restTemplate.getForObject("http://localhost:8082/orderController/" + orderId, OrderEntity.class);
+        OrderEntity orderByID = restTemplate.getForObject("http://ORDER-SERVICE/orderController/" + orderId, OrderEntity.class);
         return orderByID;
     }
 
@@ -97,7 +99,7 @@ public class UserService {
 
         ResponseEntity<OrderEntity> response
                 = restTemplate.exchange(
-                        "http://localhost:8082/orderController",
+                        "http://ORDER-SERVICE/orderController",
                         HttpMethod.POST,
                         requestEntity,
                         new ParameterizedTypeReference<OrderEntity>() {
