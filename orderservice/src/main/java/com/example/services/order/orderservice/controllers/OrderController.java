@@ -5,6 +5,7 @@
 package com.example.services.order.orderservice.controllers;
 
 import com.example.services.order.orderservice.entities.OrderEntity;
+import com.example.services.order.orderservice.entities.UserEntity;
 import com.example.services.order.orderservice.services.OrderService;
 import java.util.List;
 import java.util.Optional;
@@ -46,4 +47,10 @@ public class OrderController {
     public List<OrderEntity> getOrderByUserId(@PathVariable long orderUserId) {
         return orderService.getOrderByUserID(orderUserId);
     }
+
+    @GetMapping("/orderID/{orderId}")
+    public UserEntity getUserByOrderId(@PathVariable long orderId) {
+        return orderService.getUserByOrderID(orderId);
+    }
+
 }
