@@ -7,9 +7,11 @@ package com.example.services.userservices.controllers;
 import com.example.services.userservices.entities.OrderEntity;
 import com.example.services.userservices.entities.UserEntity;
 import com.example.services.userservices.services.UserService;
+import com.example.services.userservices.userDTO.UserResponse;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +31,7 @@ public class UserController {
     private UserService UserService;
 
     @PostMapping("/saveUser")
-    public UserEntity saveUser(@RequestBody UserEntity user) {
+    public ResponseEntity<UserResponse> saveUser(@RequestBody UserEntity user) {
         return UserService.saveUser(user);
     }
 

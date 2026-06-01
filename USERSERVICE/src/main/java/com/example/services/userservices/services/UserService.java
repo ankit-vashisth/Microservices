@@ -7,6 +7,9 @@ package com.example.services.userservices.services;
 import com.example.services.userservices.entities.OrderEntity;
 import com.example.services.userservices.entities.UserEntity;
 import com.example.services.userservices.repositories.UserRepository;
+import com.example.services.userservices.userDTO.UserResponse;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,9 +36,20 @@ public class UserService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public UserEntity saveUser(UserEntity user) {
+    public ResponseEntity<UserResponse> saveUser(UserEntity user) {
+
         UserEntity createdUser = UserRepository.save(user);
-        return createdUser;
+        String mailbody = "New User Created.";
+        String messageForAlert = mailAlertForUserCreation(1, mailbody);
+
+        UserResponse response = new UserResponse(
+                createdUser,
+                messageForAlert
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 
     public List<UserEntity> getAllUserList() {
@@ -109,4 +124,19 @@ public class UserService {
         return response.getBody();
     }
 
+    public String mailAlertForUserCreation(long senderEmailIDNo, String mailbody) {
+        System.out.println("going to Alert creation of User:::::::::: " + senderEmailIDNo);
+
+        ResponseEntity<String> response
+                = restTemplate.exchange(
+                        "http://NOTIFICATION-SERVICE/sendNotification/"
+                        + senderEmailIDNo
+                        + "?mailbody=" + URLEncoder.encode(mailbody, StandardCharsets.UTF_8),
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<String>() {
+                }
+                );
+        return response.getBody();
+    }
 }
